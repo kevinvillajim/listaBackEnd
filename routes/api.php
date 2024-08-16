@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MiembroController;
+use App\Http\Controllers\AsistenciaController;
 use App\Models\User;
 
 
@@ -38,7 +39,23 @@ Route::middleware(['auth:api'])->group(function () {
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('miembros', [MiembroController::class, 'index']);
+    Route::get('miembros/attendance', [MiembroController::class, 'indexAttendance']);
+    Route::get('miembros/{id}/last-attendance', [MiembroController::class, 'getLastAttendance']);
     Route::post('miembros', [MiembroController::class, 'store']);
     Route::put('miembros/{id}', [MiembroController::class, 'update']);
     Route::delete('miembros/{id}', [MiembroController::class, 'destroy']);
+    Route::get('miembros/activity', [MiembroController::class, 'getActiveInactiveCount']);
+    Route::get('miembros/calling', [MiembroController::class, 'getCallingCount']);
+});
+
+// Rutas para la gestión de asistencia
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('asistencias/fecha/{date}', [AsistenciaController::class, 'getAsistenciaByDate']);
+    Route::get('asistencias/miembro/{miembroId}', [AsistenciaController::class, 'getAsistenciaByMiembro']);
+    Route::get('asistencias/miembro/{miembroId}/fecha/{date}', [AsistenciaController::class, 'getAsistenciaByMiembroAndDate']);
+    Route::post('asistencias', [AsistenciaController::class, 'store']);
+});
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('asistencias/chart', [AsistenciaController::class, 'getFormattedAttendanceData']);
 });
