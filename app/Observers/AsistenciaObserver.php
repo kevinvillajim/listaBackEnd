@@ -20,7 +20,7 @@ class AsistenciaObserver
             if ($miembro->pivot->attended) {
                 $miembro->updateLastAttendance($asistencia->date);
             } else {
-                $miembro->active = false;
+                $miembro->active = 3;
                 $miembro->save();
             }
         }

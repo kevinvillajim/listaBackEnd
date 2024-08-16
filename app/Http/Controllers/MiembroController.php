@@ -23,6 +23,19 @@ class MiembroController extends Controller
         }])->get()->map(function ($miembro) {
             $lastAttendance = $miembro->asistencias->first();
             $lastAttendanceDate = $lastAttendance ? Carbon::parse($lastAttendance->date)->format('Y-m-d') : null;
+
+            $now = Carbon::now();
+            $active = 3;
+
+            if ($lastAttendanceDate) {
+                $parsedDate = Carbon::parse($lastAttendanceDate);
+                if ($parsedDate->isAfter($now->subWeeks(2))) {
+                    $active = 1;
+                } elseif ($parsedDate->isAfter($now->subWeeks(6))) {
+                    $active = 2;
+                }
+            }
+
             return [
                 'id' => $miembro->id,
                 'name' => $miembro->name,
@@ -31,7 +44,7 @@ class MiembroController extends Controller
                 'calling' => $miembro->calling,
                 'organization' => $miembro->organization,
                 'lastAttendance' => $lastAttendanceDate,
-                'active' => $lastAttendanceDate ? Carbon::parse($lastAttendanceDate)->isAfter(now()->subMonth()) : false,
+                'active' => $active,
             ];
         });
 
@@ -91,7 +104,7 @@ class MiembroController extends Controller
             'phone' => 'nullable',
             'calling' => 'nullable',
             'organization' => 'nullable',
-            'active' => 'boolean',
+            'active' => 'integer',
             'lastAttendance' => 'nullable',
         ]);
 
@@ -131,8 +144,9 @@ class MiembroController extends Controller
 
     public function getActiveInactiveCount()
     {
-        $activeCount = Miembro::where('active', true)->count();
-        $inactiveCount = Miembro::where('active', false)->count();
+        $activeCount = Miembro::where('active', 1)->count();
+        $almostInactiveCount = Miembro::where('active', 2)->count();
+        $inactiveCount = Miembro::where('active', 3)->count();
         $totalCount = Miembro::count();
 
         return response()->json([

@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Miembro;
+use Carbon\Carbon;
 
 class MiembroObserver
 {
@@ -13,9 +14,17 @@ class MiembroObserver
     public function saving(Miembro $miembro)
     {
         if ($miembro->lastAttendance) {
-            $miembro->active = $miembro->lastAttendance->isAfter(now()->subMonth());
+            $now = Carbon::now();
+
+            if ($miembro->lastAttendance->isAfter($now->subWeeks(2))) {
+                $miembro->active = 1;
+            } elseif ($miembro->lastAttendance->isAfter($now->subWeeks(6))) {
+                $miembro->active = 2;
+            } else {
+                $miembro->active = 3;
+            }
         } else {
-            $miembro->active = false;
+            $miembro->active = 3;
         }
     }
     /**

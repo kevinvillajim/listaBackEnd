@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MiembroController;
 use App\Http\Controllers\AsistenciaController;
+use App\Http\Controllers\MiembroImportController;
 use App\Models\User;
 
 
@@ -46,6 +47,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::delete('miembros/{id}', [MiembroController::class, 'destroy']);
     Route::get('miembros/activity', [MiembroController::class, 'getActiveInactiveCount']);
     Route::get('miembros/calling', [MiembroController::class, 'getCallingCount']);
+    Route::post('import-miembros', [MiembroImportController::class, 'import']);
 });
 
 // Rutas para la gestión de asistencia

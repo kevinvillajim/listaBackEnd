@@ -18,7 +18,7 @@ class Miembro extends Model
     ];
 
     protected $casts = [
-        'active' => 'boolean',
+        'active' => 'integer',
         'lastAttendance' => 'date',
     ];
 
@@ -32,7 +32,16 @@ class Miembro extends Model
     public function updateLastAttendance($date)
     {
         $this->lastAttendance = Carbon::parse($date); // Asegúrate de que el valor sea una instancia de Carbon
-        $this->active = $this->lastAttendance->isAfter(now()->subMonth());
+        $now = Carbon::now();
+
+        if ($this->lastAttendance->isAfter($now->subWeeks(2))) {
+            $this->active = 1;
+        } elseif ($this->lastAttendance->isAfter($now->subWeeks(6))) {
+            $this->active = 2;
+        } else {
+            $this->active = 3;
+        }
+
         $this->save();
     }
 }

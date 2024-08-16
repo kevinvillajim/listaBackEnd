@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('calling')->nullable();
             $table->string('organization')->nullable();
-            $table->boolean('active')->default(true);
+            $table->integer('active')->default(1);
             $table->date('lastAttendance')->nullable();
             $table->timestamps();
         });
