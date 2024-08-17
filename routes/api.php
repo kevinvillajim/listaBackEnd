@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MiembroController;
 use App\Http\Controllers\AsistenciaController;
 use App\Http\Controllers\MiembroImportController;
+use App\Http\Controllers\MessageTemplateController;
 use App\Models\User;
 
 
@@ -60,4 +61,11 @@ Route::middleware(['auth:api'])->group(function () {
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('asistencias/chart', [AsistenciaController::class, 'getFormattedAttendanceData']);
+});
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('messages', [MessageTemplateController::class, 'index']);
+    Route::post('messages', [MessageTemplateController::class, 'store']);
+    Route::put('messages/{id}', [MessageTemplateController::class, 'update']);
+    Route::delete('messages/{id}', [MessageTemplateController::class, 'destroy']);
 });
