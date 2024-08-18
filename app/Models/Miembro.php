@@ -25,7 +25,7 @@ class Miembro extends Model
     public function asistencias()
     {
         return $this->belongsToMany(Asistencia::class)
-            ->withPivot('attended')
+            ->withPivot('attended', 'attendedClass')
             ->withTimestamps();
     }
 

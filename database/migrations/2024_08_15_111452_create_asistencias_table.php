@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('asistencias', function (Blueprint $table) {
             $table->id();
             $table->date('date');
+            $table->boolean('is_submitted')->default(false);
             $table->timestamps();
         });
     }
+
+
 
     /**
      * Reverse the migrations.

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('asistencia_id')->constrained()->onDelete('cascade');
             $table->foreignId('miembro_id')->constrained()->onDelete('cascade');
             $table->boolean('attended')->default(false);
+            $table->boolean('attendedClass')->default(false);
             $table->timestamps();
         });
     }

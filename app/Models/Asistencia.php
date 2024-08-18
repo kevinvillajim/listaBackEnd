@@ -23,7 +23,7 @@ class Asistencia extends Model
     public function miembros()
     {
         return $this->belongsToMany(Miembro::class)
-            ->withPivot('attended')
+            ->withPivot('attended', 'attendedClass')
             ->withTimestamps();
     }
 }

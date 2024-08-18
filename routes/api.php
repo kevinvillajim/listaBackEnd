@@ -57,6 +57,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('asistencias/miembro/{miembroId}', [AsistenciaController::class, 'getAsistenciaByMiembro']);
     Route::get('asistencias/miembro/{miembroId}/fecha/{date}', [AsistenciaController::class, 'getAsistenciaByMiembroAndDate']);
     Route::post('asistencias', [AsistenciaController::class, 'store']);
+    Route::put('asistencias/miembro/{miembroId}/{asistenciaId}', [AsistenciaController::class, 'updateAttendedClass']);
 });
 
 Route::middleware(['auth:api'])->group(function () {
